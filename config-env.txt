@@ -1,0 +1,8 @@
+#Rename to 'config.env', modify details
+PORT=3500
+
+DB_IP=localhost
+DB_PORT=5432
+DB_NAME=notesdb
+DB_USERNAME=USERNAME
+DB_PASSWORD=PASSWORD

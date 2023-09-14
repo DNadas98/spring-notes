@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Note</title>
+  <link href="/style/style.css" rel="stylesheet">
+  <script defer src="script/note.js" type="module"></script>
+</head>
+<body>
+  <h1 id="noteFormTitle"></h1>
+  <form id="noteForm">
+    <label for="noteTitleInput">Title: </label>
+    <input id="noteTitleInput" maxlength="100" minlength="1" name="title" placeholder="Enter note title" required
+           type="text"/>
+    <label for="noteContentInput">Content: </label>
+    <textarea cols="40" id="noteContentInput" minlength="1" name="title" placeholder="Enter note content" required
+              rows="20"></textarea>
+    <button type="submit">Save</button>
+    <a href="/" tabindex="-1">
+      <button type="button">Back</button>
+    </a>
+  </form>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Index</title>
+  <link href="/style/style.css" rel="stylesheet">
+  <script defer src="/script/index.js" type="module"></script>
+</head>
+<body>
+  <h1>Spring Boot PostgreSQL Template</h1>
+  <p>Starter template for a Spring Boot application with PostgreSQL connection.</p>
+  <h2>Spring Notes</h2>
+  <input id="notesSearchInput" placeholder="Search notes" type="search">
+  <a href="/note.html" tabindex="-1">
+    <button>New note</button>
+  </a>
+  <div id="notesDiv"></div>
+  <div>
+    <h2>Project info</h2>
+    <h3>Setup & Run:</h3>
+    <ul>
+      <li>Load dependencies with Maven</li>
+      <li>Rename <code>config-env.txt</code> to <code>config.env</code>, modify default values</li>
+      <li>Create PostgreSQL database <code>notesdb</code>, configure data source in IDE</li>
+      <li>Run <code>setup.sql</code> on the database</li>
+      <li>Build and run the application using Maven.</li>
+    </ul>
+    <h3>Sources</h3>
+    <ul>
+      <li><a href="https://spring.io/projects/spring-boot" rel="noopener noreferrer" target="_blank">Spring
+        Boot docs</a>
+      </li>
+      <li><a href="https://www.postgresql.org/docs/current/index.html" rel="noopener noreferrer"
+             target="_blank">PostgreSQL
+        docs</a></li>
+      <li><a href="https://start.spring.io/" rel="noopener noreferrer" target="_blank">Spring
+        Initializr</a></li>
+      <li><a href="https://www.baeldung.com/java-jdbc" rel="noopener noreferrer" target="_blank">JDBC,
+        Connection,
+        PreparedStatement</a></li>
+      <li><a href="https://www.baeldung.com/java-try-with-resources" rel="noopener noreferrer"
+             target="_blank">Try with
+        Resources</a></li>
+    </ul>
+    <p>Created by: <a href="https://github.com/DNadas98" rel="noopener noreferrer" target="_blank">Dániel
+      Nádas</a></p>
+  </div>
+</body>
+</html>

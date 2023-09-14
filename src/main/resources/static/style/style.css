@@ -1,0 +1,70 @@
+* {
+  color: inherit;
+  background-color: inherit;
+}
+
+body {
+  --light-color: aliceblue;
+  --mid-color: steelblue;
+  --dark-color: rgb(5, 15, 30);
+
+  background-color: var(--dark-color);
+  color: var(--light-color);
+  accent-color: var(--light-color);
+
+  font-family: sans-serif;
+  margin: 2rem;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+code {
+  font-size: 1.1rem;
+  color: burlywood;
+}
+
+button {
+  margin: 1rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  min-width: 7rem;
+  cursor: pointer;
+}
+
+a:not(a:has(button)) {
+  color: var(--light-color);
+  text-decoration: none;
+  transition: 0.15s;
+}
+
+a:not(a:has(button)):hover, a:not(a:has(button)):focus, a:not(a:has(button)):visited {
+  color: var(--mid-color);
+}
+
+table button {
+  margin: 0;
+  min-width: fit-content;
+}
+
+th, td {
+  padding: 0.5rem;
+  text-align: left;
+}
+
+input, textarea {
+  margin: 1rem 0;
+  padding: 0.5rem;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+form input, textarea {
+  display: block;
+  width: 100%;
+}
