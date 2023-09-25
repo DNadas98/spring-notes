@@ -1,7 +1,9 @@
 package com.dnadas.spring_notes.service.note;
 
 import com.dnadas.spring_notes.model.note.dao.NoteDAO;
-import com.dnadas.spring_notes.model.note.dto.Note;
+import com.dnadas.spring_notes.model.note.dto.NotePatchDTO;
+import com.dnadas.spring_notes.model.note.dto.NotePostDTO;
+import com.dnadas.spring_notes.model.note.dto.NoteResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,22 +20,22 @@ public class NoteServiceImpl implements NoteService {
   }
 
   @Override
-  public List<Note> findAll() {
+  public List<NoteResponseDTO> findAll() {
     return noteDAO.findAll();
   }
 
   @Override
-  public Optional<Note> findById(Long id) {
+  public Optional<NoteResponseDTO> findById(Long id) {
     return noteDAO.findById(id);
   }
 
   @Override
-  public boolean create(Note note) {
+  public boolean create(NotePostDTO note) {
     return noteDAO.create(note);
   }
 
   @Override
-  public boolean update(Note note) {
+  public boolean update(NotePatchDTO note) {
     return noteDAO.update(note);
   }
 

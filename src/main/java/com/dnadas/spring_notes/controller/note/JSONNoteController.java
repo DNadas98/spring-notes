@@ -1,6 +1,8 @@
 package com.dnadas.spring_notes.controller.note;
 
-import com.dnadas.spring_notes.model.note.dto.Note;
+import com.dnadas.spring_notes.model.note.dto.NotePatchDTO;
+import com.dnadas.spring_notes.model.note.dto.NotePostDTO;
+import com.dnadas.spring_notes.model.note.dto.NoteResponseDTO;
 import com.dnadas.spring_notes.service.note.NoteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,13 +29,13 @@ public class JSONNoteController {
 
   @GetMapping
   public ResponseEntity<?> getAllNotes() {
-    List<Note> notes = noteService.findAll();
+    List<NoteResponseDTO> notes = noteService.findAll();
     return ResponseEntity.ok(Map.of("data", notes));
   }
 
   @GetMapping("/{id}")
   public ResponseEntity<?> getNoteById(@PathVariable Long id) {
-    Optional<Note> note = noteService.findById(id);
+    Optional<NoteResponseDTO> note = noteService.findById(id);
     if (note.isPresent()) {
       return ResponseEntity.ok(Map.of("data", note.get()));
     } else {
@@ -43,7 +45,7 @@ public class JSONNoteController {
   }
 
   @PostMapping
-  public ResponseEntity<?> createNote(@RequestBody Note note) {
+  public ResponseEntity<?> createNote(@RequestBody NotePostDTO note) {
     if (noteService.create(note)) {
       return ResponseEntity.ok(Map.of("message", "Note created successfully"));
     } else {
@@ -52,7 +54,7 @@ public class JSONNoteController {
   }
 
   @PatchMapping
-  public ResponseEntity<?> updateNote(@RequestBody Note note) {
+  public ResponseEntity<?> updateNote(@RequestBody NotePatchDTO note) {
     if (noteService.update(note)) {
       return ResponseEntity.ok(Map.of("message", "Note updated successfully"));
     } else {

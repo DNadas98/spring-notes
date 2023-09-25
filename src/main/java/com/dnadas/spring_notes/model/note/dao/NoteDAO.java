@@ -1,18 +1,20 @@
 package com.dnadas.spring_notes.model.note.dao;
 
-import com.dnadas.spring_notes.model.note.dto.Note;
+import com.dnadas.spring_notes.model.note.dto.NotePatchDTO;
+import com.dnadas.spring_notes.model.note.dto.NotePostDTO;
+import com.dnadas.spring_notes.model.note.dto.NoteResponseDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface NoteDAO {
-  List<Note> findAll();
+  List<NoteResponseDTO> findAll();
 
-  Optional<Note> findById(Long id);
+  Optional<NoteResponseDTO> findById(Long id);
 
-  boolean create(Note note);
+  boolean create(NotePostDTO note);
 
-  boolean update(Note note);
+  boolean update(NotePatchDTO note);
 
   boolean delete(Long id);
 }

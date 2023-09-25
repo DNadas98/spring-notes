@@ -1,6 +1,8 @@
 package com.dnadas.spring_notes.model.note.dao;
 
-import com.dnadas.spring_notes.model.note.dto.Note;
+import com.dnadas.spring_notes.model.note.dto.NotePatchDTO;
+import com.dnadas.spring_notes.model.note.dto.NotePostDTO;
+import com.dnadas.spring_notes.model.note.dto.NoteResponseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +31,14 @@ public class JDBCNoteDAO implements NoteDAO {
     this.logger = LoggerFactory.getLogger(this.getClass());
   }
 
-  private Note getNoteObject(ResultSet rs) throws SQLException {
-    return new Note(rs.getLong("id"), rs.getString("title"), rs.getString("content"), rs.getDate("created_at"));
+  private NoteResponseDTO getNoteObject(ResultSet rs) throws SQLException {
+    return new NoteResponseDTO(rs.getLong("id"), rs.getString("title"), rs.getString("content"), rs.getDate("created_at"));
   }
 
   @Override
-  public List<Note> findAll() {
-    List<Note> notes = new ArrayList<>();
-    String sql = "SELECT * FROM NOTES ORDER BY CREATED_AT";
+  public List<NoteResponseDTO> findAll() {
+    List<NoteResponseDTO> notes = new ArrayList<>();
+    String sql = "SELECT * FROM notes ORDER BY CREATED_AT";
     try (Connection conn = dataSource.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql);
          ResultSet rs = ps.executeQuery()) {
@@ -51,14 +53,14 @@ public class JDBCNoteDAO implements NoteDAO {
   }
 
   @Override
-  public Optional<Note> findById(Long id) {
-    String sql = "SELECT * FROM NOTES WHERE ID = ?";
+  public Optional<NoteResponseDTO> findById(Long id) {
+    String sql = "SELECT * FROM notes WHERE ID = ?";
     try (Connection conn = dataSource.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
       ps.setLong(1, id);
       ResultSet rs = ps.executeQuery();
       if (rs.next()) {
-        Note note = getNoteObject(rs);
+        NoteResponseDTO note = getNoteObject(rs);
         logger.info("Read note: " + note.title());
         return Optional.of(note);
       }
@@ -69,8 +71,8 @@ public class JDBCNoteDAO implements NoteDAO {
   }
 
   @Override
-  public boolean create(Note note) {
-    String sql = "INSERT INTO NOTES(TITLE,CONTENT) VALUES(?,?)";
+  public boolean create(NotePostDTO note) {
+    String sql = "INSERT INTO notes(TITLE,CONTENT) VALUES(?,?)";
     try (Connection conn = dataSource.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
       ps.setString(1, note.title());
@@ -89,8 +91,8 @@ public class JDBCNoteDAO implements NoteDAO {
   }
 
   @Override
-  public boolean update(Note note) {
-    String sql = "UPDATE NOTES SET TITLE = ?, CONTENT = ?  WHERE ID = ?";
+  public boolean update(NotePatchDTO note) {
+    String sql = "UPDATE notes SET TITLE = ?, CONTENT = ?  WHERE ID = ?";
     try (Connection conn = dataSource.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
       ps.setString(1, note.title());
