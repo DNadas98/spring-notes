@@ -3,7 +3,7 @@ package com.dnadas.spring_notes.service.note;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class NoteServiceImplTest {
+class NoteServiceTest {
   //TODO
 
   @BeforeEach
