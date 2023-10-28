@@ -32,9 +32,9 @@ public class JSONErrorController implements ErrorController {
     logger.error(status + "\t" + (e != null ? e.getMessage() : "Unknown Error"), e);
 
     if (status == 404) {
-      return ResponseEntity.status(404).body(Map.of("error", "Not Found", "status", 404));
+      return ResponseEntity.status(404).body(Map.of("error", "Not Found"));
     } else {
-      return ResponseEntity.status(500).body(Map.of("error", "Internal Server Error", "status", 500));
+      return ResponseEntity.status(500).body(Map.of("error", "Internal Server Error"));
     }
   }
 }
