@@ -1,20 +1,20 @@
 package com.dnadas.spring_notes.model.note.dao;
 
-import com.dnadas.spring_notes.model.note.dto.NotePatchDTO;
-import com.dnadas.spring_notes.model.note.dto.NotePostDTO;
-import com.dnadas.spring_notes.model.note.dto.NoteResponseDTO;
+import com.dnadas.spring_notes.exception.DaoException;
+import com.dnadas.spring_notes.model.note.Note;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public interface NoteDAO {
-  List<NoteResponseDTO> findAll();
+  List<Note> findAll() throws SQLException;
 
-  Optional<NoteResponseDTO> findById(Long id);
+  Optional<Note> findById(Long id) throws SQLException;
 
-  boolean create(NotePostDTO note);
+  void create(String title, String content) throws SQLException, DaoException;
 
-  boolean update(NotePatchDTO note);
+  void update(Long id, String title, String content) throws SQLException, DaoException;
 
-  boolean delete(Long id);
+  boolean delete(Long id) throws SQLException;
 }

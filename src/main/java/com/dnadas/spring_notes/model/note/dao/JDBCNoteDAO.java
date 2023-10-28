@@ -1,8 +1,8 @@
 package com.dnadas.spring_notes.model.note.dao;
 
-import com.dnadas.spring_notes.model.note.dto.NotePatchDTO;
-import com.dnadas.spring_notes.model.note.dto.NotePostDTO;
-import com.dnadas.spring_notes.model.note.dto.NoteResponseDTO;
+import com.dnadas.spring_notes.exception.DaoException;
+import com.dnadas.spring_notes.exception.UniqueConstraintException;
+import com.dnadas.spring_notes.model.note.Note;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +31,15 @@ public class JDBCNoteDAO implements NoteDAO {
     this.logger = LoggerFactory.getLogger(this.getClass());
   }
 
-  private NoteResponseDTO getNoteObject(ResultSet rs) throws SQLException {
-    return new NoteResponseDTO(rs.getLong("id"), rs.getString("title"), rs.getString("content"), rs.getDate("created_at"));
+  private Note getNoteObject(ResultSet rs) throws SQLException {
+    return new Note(
+      rs.getLong("id"), rs.getString("title"), rs.getString("content"), rs.getTimestamp(
+      "created_at").toLocalDateTime());
   }
 
   @Override
-  public List<NoteResponseDTO> findAll() {
-    List<NoteResponseDTO> notes = new ArrayList<>();
+  public List<Note> findAll() throws SQLException {
+    List<Note> notes = new ArrayList<>();
     String sql = "SELECT * FROM notes ORDER BY CREATED_AT";
     try (Connection conn = dataSource.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql);
@@ -46,83 +48,84 @@ public class JDBCNoteDAO implements NoteDAO {
         notes.add(getNoteObject(rs));
       }
       logger.info(notes.size() + " notes read");
-    } catch (SQLException e) {
-      logger.error("Failed to read notes", e);
     }
     return notes;
   }
 
   @Override
-  public Optional<NoteResponseDTO> findById(Long id) {
+  public Optional<Note> findById(Long id) throws SQLException {
     String sql = "SELECT * FROM notes WHERE ID = ?";
     try (Connection conn = dataSource.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
       ps.setLong(1, id);
-      ResultSet rs = ps.executeQuery();
-      if (rs.next()) {
-        NoteResponseDTO note = getNoteObject(rs);
-        logger.info("Read note: " + note.title());
-        return Optional.of(note);
+      try (ResultSet rs = ps.executeQuery()) {
+        if (rs.next()) {
+          Note note = getNoteObject(rs);
+          logger.info("Read note: " + note.getTitle());
+          return Optional.of(note);
+        }
       }
-    } catch (SQLException e) {
-      logger.error("Failed to read note with ID " + id, e);
     }
     return Optional.empty();
   }
 
   @Override
-  public boolean create(NotePostDTO note) {
+  public void create(String title, String content) throws SQLException, DaoException {
     String sql = "INSERT INTO notes(TITLE,CONTENT) VALUES(?,?)";
     try (Connection conn = dataSource.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
-      ps.setString(1, note.title());
-      ps.setString(2, note.content());
-      ps.executeUpdate();
-      logger.info("Created note: " + note.title());
-      return true;
+      ps.setString(1, title);
+      ps.setString(2, content);
+      int affectedRows = ps.executeUpdate();
+      if (affectedRows == 0) {
+        throw new DaoException("Failed to create note");
+      }
+      logger.info("Created note: " + title);
     } catch (SQLException e) {
       if (e.getSQLState().equals(UNIQUE_CONSTRAINT_VIOLATION)) {
-        logger.error(note.title() + " violates unique constraint", e);
+        throw new UniqueConstraintException(e.getMessage(),"title"
+          ,title);
       } else {
-        logger.error("Failed to create note", e);
+        throw new SQLException(e);
       }
-      return false;
     }
   }
 
   @Override
-  public boolean update(NotePatchDTO note) {
+  public void update(Long id, String title, String content)
+    throws SQLException, DaoException {
     String sql = "UPDATE notes SET TITLE = ?, CONTENT = ?  WHERE ID = ?";
     try (Connection conn = dataSource.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
-      ps.setString(1, note.title());
-      ps.setString(2, note.content());
-      ps.setLong(3, note.id());
-      ps.executeUpdate();
-      logger.info("Updated note: " + note.title());
-      return true;
+      ps.setString(1, title);
+      ps.setString(2, content);
+      ps.setLong(3, id);
+      int affectedRows = ps.executeUpdate();
+      if (affectedRows == 0) {
+        throw new DaoException("Failed to update note");
+      }
+      logger.info("Updated note: " + title);
     } catch (SQLException e) {
       if (e.getSQLState().equals(UNIQUE_CONSTRAINT_VIOLATION)) {
-        logger.error(note.title() + " violates unique constraint", e);
+        throw new UniqueConstraintException(e.getMessage(),"title",title);
       } else {
-        logger.error("Failed to create note", e);
+        throw new SQLException(e);
       }
-      return false;
     }
   }
 
   @Override
-  public boolean delete(Long id) {
+  public boolean delete(Long id) throws SQLException, DaoException {
     String sql = "DELETE FROM NOTES WHERE ID = ?";
     try (Connection conn = dataSource.getConnection();
          PreparedStatement ps = conn.prepareStatement(sql)) {
       ps.setLong(1, id);
-      ps.executeUpdate();
+      int affectedRows = ps.executeUpdate();
+      if (affectedRows == 0) {
+        throw new DaoException("Failed to create note");
+      }
       logger.info("Deleted note with ID " + id);
       return true;
-    } catch (SQLException e) {
-      logger.error("Failed to delete note with ID " + id, e);
-      return false;
     }
   }
 }
