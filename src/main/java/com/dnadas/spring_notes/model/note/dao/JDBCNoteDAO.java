@@ -83,8 +83,8 @@ public class JDBCNoteDAO implements NoteDAO {
       logger.info("Created note: " + title);
     } catch (SQLException e) {
       if (e.getSQLState().equals(UNIQUE_CONSTRAINT_VIOLATION)) {
-        throw new UniqueConstraintException(e.getMessage(),"title"
-          ,title);
+        throw new UniqueConstraintException(e.getMessage(), "title"
+          , title);
       } else {
         throw new SQLException(e);
       }
@@ -107,7 +107,7 @@ public class JDBCNoteDAO implements NoteDAO {
       logger.info("Updated note: " + title);
     } catch (SQLException e) {
       if (e.getSQLState().equals(UNIQUE_CONSTRAINT_VIOLATION)) {
-        throw new UniqueConstraintException(e.getMessage(),"title",title);
+        throw new UniqueConstraintException(e.getMessage(), "title", title);
       } else {
         throw new SQLException(e);
       }

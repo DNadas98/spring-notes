@@ -25,7 +25,8 @@ public class JSONErrorController implements ErrorController {
 
   @RequestMapping("/error")
   public ResponseEntity<Map<String, Object>> handleError(WebRequest webRequest) {
-    Map<String, Object> errorAttributesData = errorAttributes.getErrorAttributes(webRequest, ErrorAttributeOptions.defaults());
+    Map<String, Object> errorAttributesData = errorAttributes.getErrorAttributes(
+      webRequest, ErrorAttributeOptions.defaults());
     int status = (int) errorAttributesData.get("status");
     Throwable e = errorAttributes.getError(webRequest);
 

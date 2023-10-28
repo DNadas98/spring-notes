@@ -30,23 +30,23 @@ public class NoteService {
 
   public Optional<NoteResponseDTO> findById(Long id) throws SQLException {
     Optional<Note> note = noteDAO.findById(id);
-    if (note.isPresent()){
-      return Optional.of( new NoteResponseDTO(note.get().getId(),note.get().getTitle(),
+    if (note.isPresent()) {
+      return Optional.of(new NoteResponseDTO(note.get().getId(), note.get().getTitle(),
         note.get().getContent()
-        ,note.get().getCreatedAt()));
+        , note.get().getCreatedAt()));
     }
     return Optional.empty();
   }
 
   public void create(NotePostDTO note) throws SQLException, DaoException {
-    noteDAO.create(note.title(),note.content());
+    noteDAO.create(note.title(), note.content());
   }
 
   public void update(NotePatchDTO note) throws SQLException, DaoException {
-    noteDAO.update(note.id(),note.title(),note.content());
+    noteDAO.update(note.id(), note.title(), note.content());
   }
 
-  public boolean delete(Long id) throws SQLException, DaoException {
-    return noteDAO.delete(id);
+  public void delete(Long id) throws SQLException, DaoException {
+    noteDAO.delete(id);
   }
 }

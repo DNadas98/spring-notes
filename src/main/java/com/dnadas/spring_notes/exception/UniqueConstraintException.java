@@ -5,9 +5,9 @@ public class UniqueConstraintException
   private final String fieldName;
   private final String value;
 
-  public UniqueConstraintException(String message,String fieldName, String value) {
+  public UniqueConstraintException(String message, String fieldName, String value) {
     super(message);
-    this.fieldName=fieldName;
+    this.fieldName = fieldName;
     this.value = value;
   }
 

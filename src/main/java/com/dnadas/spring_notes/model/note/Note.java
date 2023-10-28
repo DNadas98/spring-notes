@@ -5,9 +5,9 @@ import java.util.Objects;
 
 public class Note {
   private final Long id;
+  private final LocalDateTime createdAt;
   private String title;
   private String content;
-  private final LocalDateTime createdAt;
 
   public Note(Long id, String title, String content, LocalDateTime createdAt) {
     this.id = id;
@@ -41,6 +41,11 @@ public class Note {
   }
 
   @Override
+  public int hashCode() {
+    return Objects.hash(id, title, content, createdAt);
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;
@@ -52,11 +57,6 @@ public class Note {
     return Objects.equals(id, note.id) && Objects.equals(title, note.title) &&
       Objects.equals(content, note.content) && Objects.equals(
       createdAt, note.createdAt);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, title, content, createdAt);
   }
 
   @Override
